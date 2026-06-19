@@ -1,0 +1,33 @@
+# Set default encoding to UTF-8
+* text=auto encoding=UTF-8
+
+# Python source files
+*.py text diff=python
+*.sql text
+*.yaml text
+*.yml text
+*.toml text
+
+# Documentation
+*.md text
+*.html text
+
+# Configuration
+*.cfg text
+*.ini text
+
+# Git files
+.gitignore text
+.gitattributes text
+
+# Executables
+Dockerfile text
+Makefile text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.svg binary
+*.ico binary
+*.xlsx binary
+*.duckdb binary
