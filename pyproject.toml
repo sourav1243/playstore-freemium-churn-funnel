@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
-    {name = "Google Data Analytics Portfolio"},
+    {name = "Sourav Kumar Sharma"},
 ]
 keywords = ["analytics", "duckdb", "churn-analysis", "funnel-analysis", "ab-testing", "google-play"]
 classifiers = [

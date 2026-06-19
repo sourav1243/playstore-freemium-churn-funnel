@@ -23,7 +23,7 @@
 
 ---
 
-An end-to-end product analytics portfolio project that traces **120,000 synthetic user journeys** through a freemium mobile-app conversion funnel. Built with **Python**, **SQL (DuckDB)**, **scikit-learn**, and **statistical hypothesis testing**, demonstrating the full analytical workflow: synthetic data generation, behavioral bot filtering, SQL funnel/cohort/churn analysis, A/B testing with pre-experiment power analysis, ML propensity modeling, and interactive dashboards.
+An end-to-end product analytics pipeline that traces **120,000 synthetic user journeys** through a freemium mobile-app conversion funnel. Built with **Python**, **SQL (DuckDB)**, **scikit-learn**, and **statistical hypothesis testing**, demonstrating the full analytical workflow: synthetic data generation, behavioral bot filtering, SQL funnel/cohort/churn analysis, A/B testing with pre-experiment power analysis, ML propensity modeling, and interactive dashboards.
 
 ---
 
@@ -187,7 +187,7 @@ pytest tests/ -v --cov=src --cov-report=term-missing   # With coverage
 ---
 
 <div align="center">
-  <p><strong>Google Data Analytics Professional Certificate — Portfolio Project</strong></p>
+  <p><strong>Freemium App Analytics Pipeline</strong></p>
   <p>
     <a href="https://github.com/sourav1243/playstore-freemium-churn-funnel">View on GitHub</a> •
     <a href="https://share.streamlit.io">Live Demo</a> •

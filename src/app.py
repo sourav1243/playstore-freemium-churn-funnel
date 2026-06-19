@@ -204,5 +204,5 @@ elif page == "Behavioral & Advanced Analytics":
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### About")
-st.sidebar.markdown("Google Data Analytics Portfolio Project")
+st.sidebar.markdown("Freemium App Analytics Pipeline")
 st.sidebar.markdown("[View on GitHub](https://github.com/sourav1243/playstore-freemium-churn-funnel)")

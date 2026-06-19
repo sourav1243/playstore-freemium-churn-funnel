@@ -134,7 +134,6 @@ def generate_powerbi_dashboard_html() -> None:
                 <p>Google Play Store Productivity Apps — End-to-End Analytics Pipeline</p>
             </div>
             <div style="text-align: right; font-size: 13px;">
-                <div>Google Data Analytics Portfolio</div>
                 <div style="opacity: 0.7;">Pipeline Data: Freshly Generated</div>
             </div>
         </div>
@@ -331,7 +330,7 @@ def generate_powerbi_dashboard_html() -> None:
         </div>
 
         <div class="footer">
-            Google Data Analytics Portfolio Project · Built with Python, DuckDB, scikit-learn, and scipy<br>
+            Built with Python, DuckDB, scikit-learn, and scipy<br>
             Power BI Dashboard Layout · Data Generated from Pipeline
         </div>
     </body>
