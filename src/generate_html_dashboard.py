@@ -6,6 +6,10 @@ from utils import PROJECT_ROOT, PROCESSED_DIR, setup_logging
 
 log = setup_logging(__name__)
 
+
+def _h(value: object) -> str:
+    return html.escape(str(value), quote=True)
+
 def generate_html() -> None:
     reports_dir: str = os.path.join(PROJECT_ROOT, 'reports')
     os.makedirs(reports_dir, exist_ok=True)
