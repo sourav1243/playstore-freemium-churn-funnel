@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from faker import Faker
 from typing import Any, Dict
-from src.utils import PROJECT_ROOT, setup_logging
+from utils import PROJECT_ROOT, setup_logging
 
 log = setup_logging(__name__)
 

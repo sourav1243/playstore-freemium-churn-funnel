@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 import shutil
-from src.utils import PROJECT_ROOT, setup_logging
+from utils import PROJECT_ROOT, setup_logging
 
 log = setup_logging(__name__)
 

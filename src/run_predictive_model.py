@@ -9,7 +9,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import roc_auc_score, classification_report
-from src.utils import PROJECT_ROOT, DB_PATH, PROCESSED_DIR, setup_logging
+from utils import PROJECT_ROOT, DB_PATH, PROCESSED_DIR, setup_logging
 
 log = setup_logging(__name__)
 

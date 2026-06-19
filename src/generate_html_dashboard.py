@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
-from src.utils import PROJECT_ROOT, PROCESSED_DIR, setup_logging
+from utils import PROJECT_ROOT, PROCESSED_DIR, setup_logging
 
 log = setup_logging(__name__)
 

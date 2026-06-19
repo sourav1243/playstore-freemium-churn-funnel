@@ -2,7 +2,7 @@ import os
 import duckdb
 import pandas as pd
 from typing import Set
-from src.utils import PROJECT_ROOT, SQL_DIR, PROCESSED_DIR, SYNTHETIC_DIR, setup_logging
+from utils import PROJECT_ROOT, SQL_DIR, PROCESSED_DIR, SYNTHETIC_DIR, setup_logging
 
 log = setup_logging(__name__)
 

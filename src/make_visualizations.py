@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
-from src.utils import PROJECT_ROOT, PROCESSED_DIR, FIGURES_DIR, setup_logging
+from utils import PROJECT_ROOT, PROCESSED_DIR, FIGURES_DIR, setup_logging
 
 log = setup_logging(__name__)
 

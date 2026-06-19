@@ -7,7 +7,7 @@ from scipy import stats
 import statsmodels.api as sm
 from statsmodels.stats.power import NormalIndPower
 from statsmodels.stats.proportion import proportions_ztest, proportion_confint
-from src.utils import PROJECT_ROOT, PROCESSED_DIR, setup_logging
+from utils import PROJECT_ROOT, PROCESSED_DIR, setup_logging
 
 log = setup_logging(__name__)
 

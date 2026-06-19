@@ -1,7 +1,7 @@
 import os
 import yaml
 import pandas as pd
-from src.utils import PROJECT_ROOT, PROCESSED_DIR, REPORTS_DIR, setup_logging
+from utils import PROJECT_ROOT, PROCESSED_DIR, REPORTS_DIR, setup_logging
 
 log = setup_logging(__name__)
 
