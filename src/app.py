@@ -1,9 +1,11 @@
 import os
+import sys
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.utils import PROJECT_ROOT, PROCESSED_DIR
 
 st.set_page_config(page_title="Freemium Analytics | Data Analytics Portfolio", layout="wide", page_icon="📊")
