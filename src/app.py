@@ -6,7 +6,7 @@ import plotly.express as px
 
 from utils import PROJECT_ROOT, PROCESSED_DIR
 
-st.set_page_config(page_title="Freemium Analytics | Data Analytics Portfolio", layout="wide", page_icon="📊")
+st.set_page_config(page_title="Freemium App Churn & Funnel Analysis", layout="wide", page_icon="📊")
 
 @st.cache_data
 def load_data():
