@@ -248,4 +248,6 @@ elif page == "Behavioral & Advanced Analytics":
 st.sidebar.markdown("---")
 st.sidebar.markdown("### About")
 st.sidebar.markdown("Freemium App Analytics Pipeline")
-st.sidebar.markdown("[View on GitHub](https://github.com/sourav1243/playstore-freemium-churn-funnel)")
+st.sidebar.markdown("### Links")
+st.sidebar.markdown("[🌐 Live App](https://playstore-freemium-churn-funnel-7d9hxo658g49pnarnobfja.streamlit.app/)")
+st.sidebar.markdown("[📄 GitHub Repo](https://github.com/sourav1243/playstore-freemium-churn-funnel)")

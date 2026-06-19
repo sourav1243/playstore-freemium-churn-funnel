@@ -7,7 +7,7 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"></a>
     <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Black"></a>
     <a href="https://duckdb.org"><img src="https://img.shields.io/badge/DuckDB-FFF000?logo=duckdb&logoColor=000" alt="DuckDB"></a>
-    <a href="https://streamlit.io"><img src="https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit" alt="Streamlit"></a>
+    <a href="https://playstore-freemium-churn-funnel-7d9hxo658g49pnarnobfja.streamlit.app/"><img src="https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?logo=streamlit" alt="Live Demo"></a>
     <a href="https://scikit-learn.org"><img src="https://img.shields.io/badge/scikit--learn-F7931E?logo=scikit-learn&logoColor=fff" alt="scikit-learn"></a>
   </p>
   <p>
@@ -89,23 +89,54 @@ docker compose up    # Runs pipeline + launches dashboard at http://localhost:85
 
 ## Pipeline Stages
 
-```
-Data Acquisition ──> Synthetic Events ──> SQL Warehouse ──> A/B Testing ──> ML Model ──> Dashboard
-    (Kaggle /          (120K users,          (DuckDB:           (Power        (Random        (Streamlit +
-     seed data)          945K events)         funnel,            analysis,     Forest,         Plotly,
-                                               cohort,           z-test,       5-fold CV)      HTML,
-                                               churn,            chi-square)                   PowerBI)
-                                               segments)
+<p align="center">
+  <em>14 automated phases · 11 Python modules · 7 SQL scripts · 3 output formats</em>
+</p>
+
+```mermaid
+flowchart LR
+    P1["📦<br/><b>Phase 1</b><br/>Data Acquisition<br/><small>20 productivity apps</small>"]
+    P2["👤<br/><b>Phase 2</b><br/>Synthetic Events<br/><small>120K users · 945K events</small>"]
+    P3["🏗️<br/><b>Phases 3‑8</b><br/>SQL Warehouse<br/><small>DuckDB analytics</small>"]
+    P4["📊<br/><b>Phase 9</b><br/>A/B Testing<br/><small>Power analysis · z‑test · chi²</small>"]
+    P5["🤖<br/><b>Phase 10</b><br/>ML Model<br/><small>Random Forest · 5‑fold CV</small>"]
+    P6["📈<br/><b>Phases 11‑14</b><br/>Reports & Dashboard<br/><small>Streamlit · Plotly · PowerBI</small>"]
+    P1 --> P2 --> P3 --> P4 & P5 --> P6
 ```
 
-| Stage | Description |
-|-------|-------------|
-| **1. Data Acquisition** | Kaggle Google Play Store dataset or built-in seed data (20 productivity apps, Rating >= 4.0) |
-| **2. Synthetic Events** | 120,000 user journeys with 4-stage funnel probabilities, A/B groups, and 4.1% bot injection |
-| **3. SQL Warehouse** | DuckDB schema, bot filtering, funnel CTEs, cohort retention, churn analysis, segmentation |
-| **4. A/B Testing** | Pre-experiment power analysis (MDE=8%, alpha=0.05, power=0.80), SRM check, two-proportion z-test, chi-square |
-| **5. ML Model** | Random Forest on Days 1-3 features (no data leakage), 5-fold CV (ROC-AUC: 0.68) |
-| **6. Reports** | Retention heatmap, funnel chart, sankey diagram, trial drop-off, interactive HTML dashboard, PowerBI export |
+| # | Stage | Description | Technologies | Key Output |
+|---|-------|-------------|-------------|------------|
+| **1** | **Data Acquisition** | Downloads Google Play Store dataset (Kaggle) or falls back to built-in seed data — 20 productivity apps filtered by Rating ≥ 4.0 | `pandas`, `kagglehub` | `apps_clean.csv` (20 apps) |
+| **2** | **Synthetic Events** | Generates 120K user journeys through 4-stage funnel, 945K behavioral events, A/B group assignment, and 4.1% bot injection with ground-truth labels | `Faker`, `numpy`, `pandas` | `synthetic_events.parquet` (945K rows) |
+| **3** | **Schema & Loading** | Creates DuckDB warehouse from config, installs raw events, validates schema integrity | `DuckDB`, `SQL` | `warehouse.duckdb`, raw tables |
+| **4** | **Bot Filtering** | Detects bots via 3 heuristics (click-speed, 24/7 activity, missing features), validates against ground-truth labels (100% precision/recall) | `DuckDB SQL`, CTEs | Clean user table |
+| **5** | **Funnel Analysis** | CTE-based funnel: install → signup → session → feature → trial → purchase, with stage-by-stage drop-off rates | `DuckDB SQL`, window functions | `funnel_summary.csv` |
+| **6** | **Cohort Retention** | Monthly cohort retention at D1/D7/D14/D30 with NULL masking for immature cohorts | `DuckDB SQL`, date-trunc | `cohort_retention.csv` |
+| **7** | **Trial Drop-off** | Day-over-day trial user activity curve identifying the engagement drop-off point (Day 6 cliff) | `DuckDB SQL`, self-joins | `trial_dropoff_curve.csv` |
+| **8** | **Segmentation** | Rule-based user segmentation (Churned / At-Risk / Engaged / Converted) with percentage breakdown | `DuckDB SQL`, `CASE` | `user_segmentation.csv` |
+| **9** | **A/B Testing** | Pre-experiment power analysis (MDE=8%, α=0.05, power=0.80), SRM chi-square test, two-proportion z-test, Bonferroni correction (α=0.025) | `statsmodels`, `scipy` | `ab_test_results.csv` |
+| **10** | **ML Model** | Random Forest classifier on Days 1-3 features only (no data leakage), 5-fold cross-validation, feature importance ranking | `scikit-learn`, `pandas` | `model_feature_importance.csv` |
+| **11** | **Visualizations** | 4 publication-ready static charts: funnel bars, retention heatmap, trial drop-off, feature adoption | `matplotlib`, `seaborn` | `reports/figures/*.png` |
+| **12** | **HTML Dashboard** | Standalone interactive HTML dashboard with all charts, KPIs, and methodology panel | `Plotly`, `Jinja2` | `reports/interactive_dashboard.html` |
+| **13** | **Business Reports** | Executive presentation and business recommendation markdowns with actionable insights | `Jinja2` | `reports/*.md` |
+| **14** | **PowerBI Export** | Clean CSV export with DAX measure definitions and dashboard build guide | `pandas` | `dashboard/exports/*.csv` |
+
+### Pipeline Automation
+
+```bash
+# Single command generates everything
+python src/run_pipeline.py
+
+# Or run phases individually
+python src/fetch_playstore_apps.py       # Phase 1
+python src/generate_synthetic_events.py   # Phase 2
+python src/db_setup.py                    # Phases 3-8
+python src/run_ab_test_analysis.py        # Phase 9
+python src/run_predictive_model.py        # Phase 10
+python src/make_visualizations.py         # Phase 11
+```
+
+All 14 phases run sequentially with automated logging, error handling, and data quality checks (26 pytest tests).
 
 ---
 
@@ -169,9 +200,9 @@ pytest tests/ -v --cov=src --cov-report=term-missing   # With coverage
 
 ## Deployment
 
-| Platform | Instructions |
-|----------|-------------|
-| **Streamlit Cloud** (free) | Go to [share.streamlit.io](https://share.streamlit.io), select repo, entry point: `src/app.py` |
+| Platform | URL / Instructions |
+|----------|-------------------|
+| **Streamlit Cloud** (live) | [playstore-freemium-churn-funnel-7d9hxo658g49pnarnobfja.streamlit.app](https://playstore-freemium-churn-funnel-7d9hxo658g49pnarnobfja.streamlit.app/) — auto-generates data on first load |
 | **Docker** (any cloud) | `docker compose up` — runs on port 8501 |
 | **Hugging Face Spaces** | Create Space → Docker → point to this repo |
 
@@ -190,7 +221,7 @@ pytest tests/ -v --cov=src --cov-report=term-missing   # With coverage
   <p><strong>Freemium App Analytics Pipeline</strong></p>
   <p>
     <a href="https://github.com/sourav1243/playstore-freemium-churn-funnel">View on GitHub</a> •
-    <a href="https://share.streamlit.io">Live Demo</a> •
+    <a href="https://playstore-freemium-churn-funnel-7d9hxo658g49pnarnobfja.streamlit.app/">Live Demo</a> •
     <a href="reports/executive_presentation.md">Executive Summary</a>
   </p>
 </div>
