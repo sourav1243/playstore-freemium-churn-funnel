@@ -18,14 +18,14 @@
     <a href="https://scikit-learn.org"><img src="https://img.shields.io/badge/scikit--learn-F7931E?logo=scikit-learn&logoColor=white" alt="scikit-learn"></a>
   </p>
   <p>
-    <a href="#-problem"><strong>Problem</strong></a> •
-    <a href="#-results-at-a-glance"><strong>Results</strong></a> •
-    <a href="#-key-findings"><strong>Findings</strong></a> •
-    <a href="#%EF%B8%8F-architecture"><strong>Architecture</strong></a> •
-    <a href="#-pipeline-stages"><strong>Pipeline</strong></a> •
-    <a href="#-quick-start"><strong>Quick Start</strong></a> •
-    <a href="#-tech-stack"><strong>Stack</strong></a> •
-    <a href="#-design-decisions"><strong>Design</strong></a>
+    <a href="#problem"><strong>Problem</strong></a> •
+    <a href="#results-at-a-glance"><strong>Results</strong></a> •
+    <a href="#key-findings"><strong>Findings</strong></a> •
+    <a href="#architecture"><strong>Architecture</strong></a> •
+    <a href="#visualizations"><strong>Visuals</strong></a> •
+    <a href="#quick-start"><strong>Quick Start</strong></a> •
+    <a href="#tech-stack"><strong>Stack</strong></a> •
+    <a href="#design-decisions"><strong>Design</strong></a>
   </p>
 </div>
 
