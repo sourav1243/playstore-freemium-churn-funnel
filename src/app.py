@@ -1,4 +1,6 @@
 import os
+import sys
+import subprocess
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
@@ -8,28 +10,69 @@ from utils import PROJECT_ROOT, PROCESSED_DIR
 
 st.set_page_config(page_title="Freemium App Churn & Funnel Analysis", layout="wide", page_icon="📊")
 
+REQUIRED_FILES = {
+    'funnel': os.path.join(PROCESSED_DIR, 'funnel_summary.csv'),
+    'cohort': os.path.join(PROCESSED_DIR, 'cohort_retention.csv'),
+    'dropoff': os.path.join(PROCESSED_DIR, 'trial_dropoff_curve.csv'),
+    'ab': os.path.join(PROCESSED_DIR, 'ab_test_results.csv'),
+    'seg': os.path.join(PROCESSED_DIR, 'user_segmentation.csv'),
+    'ml': os.path.join(PROCESSED_DIR, 'model_feature_importance.csv'),
+    'chi2': os.path.join(PROCESSED_DIR, 'behavioral_chi2_results.csv'),
+    'advanced': os.path.join(PROCESSED_DIR, 'advanced_analytics.csv'),
+}
+
+def _needs_bootstrap() -> list[str]:
+    return [k for k, v in REQUIRED_FILES.items() if not os.path.exists(v)]
+
+def _bootstrap_data() -> None:
+    missing = _needs_bootstrap()
+    if not missing:
+        return
+
+    st.warning("⚠️ **First-time setup:** Generating analytics data (~2 minutes). This runs once after deployment.")
+    st.info("Pipeline steps will auto-progress below. The dashboard loads immediately after.")
+
+    phases = [
+        ("src/fetch_playstore_apps.py",      "📦 Fetching app catalog"),
+        ("src/generate_synthetic_events.py",  "👤 Generating user behavioral events"),
+        ("src/db_setup.py",                   "🏗️  Building analytical warehouse"),
+        ("src/run_ab_test_analysis.py",       "📊 Running A/B test analysis"),
+        ("src/run_predictive_model.py",       "🤖 Training ML model"),
+    ]
+
+    progress = st.progress(0, text="Starting pipeline...")
+
+    for i, (script, label) in enumerate(phases):
+        progress.progress(i / len(phases), text=label)
+        result = subprocess.run(
+            [sys.executable, script],
+            cwd=PROJECT_ROOT,
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            err = result.stderr.strip() or result.stdout.strip() or "(no output)"
+            progress.empty()
+            st.error(f"❌ Pipeline failed at: {label}")
+            with st.expander("Error details", expanded=True):
+                st.code(err[:2000])
+            st.stop()
+
+    progress.progress(1.0, text="✅ Data generation complete!")
+    st.rerun()
+
 @st.cache_data
 def load_data():
-    files = {
-        'funnel': os.path.join(PROCESSED_DIR, 'funnel_summary.csv'),
-        'cohort': os.path.join(PROCESSED_DIR, 'cohort_retention.csv'),
-        'dropoff': os.path.join(PROCESSED_DIR, 'trial_dropoff_curve.csv'),
-        'ab': os.path.join(PROCESSED_DIR, 'ab_test_results.csv'),
-        'seg': os.path.join(PROCESSED_DIR, 'user_segmentation.csv'),
-        'ml': os.path.join(PROCESSED_DIR, 'model_feature_importance.csv'),
-        'chi2': os.path.join(PROCESSED_DIR, 'behavioral_chi2_results.csv'),
-        'advanced': os.path.join(PROCESSED_DIR, 'advanced_analytics.csv'),
-    }
-    missing = [k for k, v in files.items() if not os.path.exists(v)]
+    missing = _needs_bootstrap()
     if missing:
-        st.error(f"Required files not found: {', '.join(missing)}. Run the pipeline first: `python src/run_pipeline.py`")
-        st.info("Need to run the full pipeline to generate data. See README for setup instructions.")
+        st.error(f"Required files not found: {', '.join(missing)}.")
         st.stop()
     try:
-        return {k: pd.read_csv(v) for k, v in files.items()}
+        return {k: pd.read_csv(v) for k, v in REQUIRED_FILES.items()}
     except Exception as e:
         st.error(f"Error loading data: {e}")
         st.stop()
+
+_bootstrap_data()
 
 data = load_data()
 funnel_df = data['funnel'].iloc[0]
@@ -38,7 +81,7 @@ dropoff_df = data['dropoff']
 ab_df = data['ab'].iloc[0]
 seg_df = data['seg']
 ml_df = data['ml']
-chi2_df = data['chi2'].iloc[0] if data['chi2'] is not None else None
+chi2_row = data['chi2'].iloc[0] if data['chi2'] is not None and not data['chi2'].empty else None
 adv_df = data['advanced']
 
 st.sidebar.title("Navigation")
@@ -169,9 +212,9 @@ elif page == "A/B Test & ML Model":
 elif page == "Behavioral & Advanced Analytics":
     st.title("Behavioral & Advanced Analytics")
 
-    if chi2_df is not None:
+    if chi2_row is not None:
         st.subheader("Chi-Square: Collaboration Feature vs. Conversion")
-        chi2_pval = chi2_df['p_value']
+        chi2_pval = chi2_row['p_value']
         if chi2_pval >= 0.001:
             chi2_display = f"{chi2_pval:.4f}"
         elif chi2_pval > 1e-100:
@@ -179,9 +222,9 @@ elif page == "Behavioral & Advanced Analytics":
         else:
             chi2_display = "< 1e-100"
         col_c1, col_c2 = st.columns(2)
-        col_c1.metric("Chi-Square Statistic", f"{chi2_df['chi2_stat']:.1f}")
+        col_c1.metric("Chi-Square Statistic", f"{chi2_row['chi2_stat']:.1f}")
         col_c2.metric("P-Value (Bonferroni α=0.025)", chi2_display,
-                      delta="Significant" if chi2_df['is_significant'] else "Not Significant")
+                      delta="Significant" if chi2_row['is_significant'] else "Not Significant")
     else:
         st.info("Chi-square results not available. Run the full pipeline.")
 
