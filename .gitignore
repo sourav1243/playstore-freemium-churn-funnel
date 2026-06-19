@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Data
+data/raw/*.zip
+data/raw/*.csv
+data/seed/*.csv
+data/synthetic/*.csv
+data/processed/*.csv
+!data/processed/.gitkeep
+data/raw/license.txt
+data/raw/*.txt
+
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# Docker
+.docker/
+
+# Reports (committed intentionally but keep consistent)
+!reports/figures/
+!reports/*.md
+!reports/*.html
+
+# Dashboard exports
+dashboard/exports/
+!dashboard/exports/.gitkeep
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+*.whl

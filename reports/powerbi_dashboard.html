@@ -1,0 +1,295 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Power BI Dashboard - Freemium App Analytics</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #f0f2f5; color: #333; }
+            .top-bar { background: linear-gradient(135deg, #0d6efd 0%, #0093E9 100%); color: #fff; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+            .top-bar h1 { font-size: 24px; font-weight: 600; }
+            .top-bar p { font-size: 14px; opacity: 0.85; }
+            .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+            .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+            .kpi-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 4px solid #0d6efd; }
+            .kpi-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #6c757d; margin-bottom: 8px; }
+            .kpi-card .value { font-size: 28px; font-weight: 700; color: #1a1a2e; }
+            .kpi-card .sub { font-size: 13px; color: #28a745; margin-top: 4px; }
+            .kpi-card.orange { border-left-color: #fd7e14; }
+            .kpi-card.green { border-left-color: #28a745; }
+            .kpi-card.purple { border-left-color: #6f42c1; }
+            .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+            .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+            .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+            .card h2 { font-size: 16px; font-weight: 600; color: #1a1a2e; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #f0f2f5; }
+            .full-width { grid-column: 1 / -1; }
+            .bar-container { margin-bottom: 12px; }
+            .bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+            .bar-track { height: 24px; background: #e9ecef; border-radius: 12px; overflow: hidden; }
+            .bar-fill { height: 100%; border-radius: 12px; transition: width 1s ease; display: flex; align-items: center; padding-left: 10px; font-size: 12px; color: #fff; font-weight: 600; }
+            .bar-fill.blue { background: linear-gradient(90deg, #0d6efd, #0093E9); }
+            .bar-fill.green { background: linear-gradient(90deg, #28a745, #20c997); }
+            .bar-fill.orange { background: linear-gradient(90deg, #fd7e14, #ffc107); }
+            .bar-fill.red { background: linear-gradient(90deg, #dc3545, #e74c3c); }
+            .bar-fill.teal { background: linear-gradient(90deg, #20c997, #0dcaf0); }
+            table { width: 100%; border-collapse: collapse; font-size: 13px; }
+            th { background: #f8f9fa; padding: 10px 12px; text-align: left; font-weight: 600; color: #495057; border-bottom: 2px solid #dee2e6; }
+            td { padding: 10px 12px; border-bottom: 1px solid #e9ecef; }
+            tr:hover { background: #f8f9fa; }
+            .stat-box { text-align: center; padding: 16px; background: #f8f9fa; border-radius: 8px; }
+            .stat-box .num { font-size: 24px; font-weight: 700; color: #0d6efd; }
+            .stat-box .desc { font-size: 12px; color: #6c757d; margin-top: 4px; }
+            .segment-donut { display: flex; align-items: center; justify-content: center; gap: 40px; }
+            .segment-legend { display: flex; flex-direction: column; gap: 8px; }
+            .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+            .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+            .footer { text-align: center; padding: 30px; color: #6c757d; font-size: 13px; }
+        </style>
+    </head>
+    <body>
+        <div class="top-bar">
+            <div>
+                <h1>Freemium App Churn & Funnel Analysis</h1>
+                <p>Google Play Store Productivity Apps — End-to-End Analytics Pipeline</p>
+            </div>
+            <div style="text-align: right; font-size: 13px;">
+                <div>Google Data Analytics Portfolio</div>
+                <div style="opacity: 0.7;">Pipeline Data: Freshly Generated</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- KPI Row -->
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="label">Total Installs</div>
+                    <div class="value">115,022</div>
+                    <div class="sub">100% baseline</div>
+                </div>
+                <div class="kpi-card orange">
+                    <div class="label">Trial Start Rate</div>
+                    <div class="value">65.3%</div>
+                    <div class="sub">of feature users start trial</div>
+                </div>
+                <div class="kpi-card green">
+                    <div class="label">Trial-to-Paid Conversion</div>
+                    <div class="value">46.3%</div>
+                    <div class="sub">Control: 45.2%</div>
+                </div>
+                <div class="kpi-card purple">
+                    <div class="label">A/B Lift (Treatment)</div>
+                    <div class="value">+4.5%</div>
+                    <div class="sub">p=4.10e-06 · 47.3% vs 45.2%</div>
+                </div>
+            </div>
+
+            <!-- Funnel + Drop Off -->
+            <div class="grid-2">
+                <div class="card">
+                    <h2>Conversion Funnel</h2>
+                    <div class="bar-container">
+                        <div class="bar-label"><span>Install</span><span>115,022 (100%)</span></div>
+                        <div class="bar-track"><div class="bar-fill blue" style="width: 100%">115,022</div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-label"><span>Account Created</span><span>97,803 (85.0%)</span></div>
+                        <div class="bar-track"><div class="bar-fill green" style="width: 85.0%">97,803</div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-label"><span>First Session</span><span>86,013 (88.0%)</span></div>
+                        <div class="bar-track"><div class="bar-fill teal" style="width: 88.0%">86,013</div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-label"><span>Feature Used</span><span>73,154 (85.0%)</span></div>
+                        <div class="bar-track"><div class="bar-fill orange" style="width: 85.0%">73,154</div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-label"><span>Trial Started</span><span>47,795 (65.3%)</span></div>
+                        <div class="bar-track"><div class="bar-fill red" style="width: 65.3%">47,795</div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-label"><span>Purchase Completed</span><span>22,115 (46.3%)</span></div>
+                        <div class="bar-track"><div class="bar-fill green" style="width: 46.3%">22,115</div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>Feature Adoption Impact</h2>
+                    <div style="display: flex; gap: 20px; align-items: stretch;">
+                        <div class="stat-box" style="flex:1; background: linear-gradient(180deg, #f8f9fa, #fff);">
+                            <div class="num" style="color:#6c757d;">32.6%</div>
+                            <div class="desc">No Collab Feature</div>
+                            <div style="font-size:11px; color:#999;">33,183 users</div>
+                        </div>
+                        <div style="display: flex; align-items: center; font-size: 28px; font-weight: 700; color: #0d6efd;">
+                            vs
+                        </div>
+                        <div class="stat-box" style="flex:1; background: linear-gradient(180deg, #d4edda, #fff);">
+                            <div class="num" style="color:#28a745;">77.2%</div>
+                            <div class="desc">Used Collab Feature</div>
+                            <div style="font-size:11px; color:#999;">14,612 users</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 16px; padding: 12px; background: #e8f4fd; border-radius: 8px; font-size: 13px;">
+                        <strong>Chi-Square Test:</strong> χ² = 8,098.6, p < 1e-300 — Highly significant correlation
+                        <br><span style="color: #6c757d;">Users adopting collaboration features convert at 2.4x higher rate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- A/B Test + ML Model -->
+            <div class="grid-3">
+                <div class="card">
+                    <h2>A/B Test: Day-6 Push Notification</h2>
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                        <div class="stat-box" style="flex:1;">
+                            <div class="num" style="color:#6c757d;">45.2%</div>
+                            <div class="desc">Control</div>
+                        </div>
+                        <div class="stat-box" style="flex:1;">
+                            <div class="num" style="color:#28a745;">47.3%</div>
+                            <div class="desc">Treatment</div>
+                        </div>
+                    </div>
+                    <div style="padding: 12px; background: #f8f9fa; border-radius: 8px; font-size: 13px; line-height: 1.8;">
+                        <div><strong>Relative Lift:</strong> +4.5%</div>
+                        <div><strong>Absolute Lift:</strong> +2.03 pp</div>
+                        <div><strong>P-Value:</strong> 4.10e-06 (Significant ✅)</div>
+                        <div><strong>Power (Pre-Exp):</strong> 80% @ MDE=8%</div>
+                        <div><strong>SRM Check:</strong> PASS (p=0.3484)</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>ML: Feature Importance</h2>
+                    <div class="bar-container" style="margin-bottom:6px;"><div class="bar-label"><span>used_collab_early</span><span>96.9%</span></div><div class="bar-track" style="height:18px;"><div class="bar-fill blue" style="width:96.9%; font-size:10px;"></div></div></div><div class="bar-container" style="margin-bottom:6px;"><div class="bar-label"><span>early_sessions</span><span>1.0%</span></div><div class="bar-track" style="height:18px;"><div class="bar-fill blue" style="width:1.0%; font-size:10px;"></div></div></div><div class="bar-container" style="margin-bottom:6px;"><div class="bar-label"><span>acquisition_channel_internal_q</span><span>0.4%</span></div><div class="bar-track" style="height:18px;"><div class="bar-fill blue" style="width:0.4%; font-size:10px;"></div></div></div><div class="bar-container" style="margin-bottom:6px;"><div class="bar-label"><span>acquisition_channel_paid_searc</span><span>0.2%</span></div><div class="bar-track" style="height:18px;"><div class="bar-fill blue" style="width:0.2%; font-size:10px;"></div></div></div><div class="bar-container" style="margin-bottom:6px;"><div class="bar-label"><span>country_CA</span><span>0.2%</span></div><div class="bar-track" style="height:18px;"><div class="bar-fill blue" style="width:0.2%; font-size:10px;"></div></div></div>
+                    <div style="margin-top: 8px; font-size: 12px; color: #6c757d;">Random Forest · 5-Fold CV ROC-AUC: 0.68</div>
+                </div>
+                <div class="card">
+                    <h2>User Segments</h2>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:2px;"><span>Power User</span><span>0.1% (140)</span></div><div class="bar-track" style="height:16px;"><div class="bar-fill blue" style="width:0.1%; font-size:10px;"></div></div></div><div><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:2px;"><span>Converted</span><span>19.2% (22,115)</span></div><div class="bar-track" style="height:16px;"><div class="bar-fill green" style="width:19.2%; font-size:10px;"></div></div></div><div><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:2px;"><span>At-Risk / Average</span><span>0.3% (308)</span></div><div class="bar-track" style="height:16px;"><div class="bar-fill orange" style="width:0.3%; font-size:10px;"></div></div></div><div><div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:2px;"><span>Churned (>14d inactive)</span><span>80.4% (92,459)</span></div><div class="bar-track" style="height:16px;"><div class="bar-fill red" style="width:80.4%; font-size:10px;"></div></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cohort Retention -->
+            <div class="card" style="margin-bottom: 20px;">
+                <h2>Cohort Retention Matrix</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr><th>Cohort Month</th><th>Size</th><th>D1</th><th>D7</th><th>D14</th><th>D30</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+            <td>2026-01-01</td>
+            <td>9,204</td>
+            <td>81.4%</td>
+            <td>22.3%</td>
+            <td>8.1%</td>
+            <td>0.8%</td>
+        </tr><tr>
+            <td>2026-02-01</td>
+            <td>18,373</td>
+            <td>81.1%</td>
+            <td>21.9%</td>
+            <td>8.2%</td>
+            <td>1.1%</td>
+        </tr><tr>
+            <td>2026-03-01</td>
+            <td>20,055</td>
+            <td>81.1%</td>
+            <td>21.4%</td>
+            <td>8.1%</td>
+            <td>0.8%</td>
+        </tr><tr>
+            <td>2026-04-01</td>
+            <td>19,615</td>
+            <td>80.9%</td>
+            <td>21.7%</td>
+            <td>8.0%</td>
+            <td>0.8%</td>
+        </tr><tr>
+            <td>2026-05-01</td>
+            <td>5,907</td>
+            <td>80.7%</td>
+            <td>22.2%</td>
+            <td>8.0%</td>
+            <td>0.8%</td>
+        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 12px; font-size: 12px; color: #6c757d;">
+                    Note: D14/D30 cells are NULL for immature cohorts (cohort maturity masking applied).
+                </div>
+            </div>
+
+            <!-- Drop-off Curve + Session Analytics -->
+            <div class="grid-2">
+                <div class="card">
+                    <h2>Trial Drop-off Curve</h2>
+                    <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                        <div class="stat-box" style="flex:1;">
+                            <div class="num" style="color:#dc3545;">27.1pp</div>
+                            <div class="desc">Drop on Day 6</div>
+                        </div>
+                        <div class="stat-box" style="flex:1;">
+                            <div class="num" style="color:#28a745;">50.2%</div>
+                            <div class="desc">Day 0 Activity</div>
+                        </div>
+                        <div class="stat-box" style="flex:1;">
+                            <div class="num" style="color:#0d6efd;">92.5%</div>
+                            <div class="desc">Peak Activity (Day 1)</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; color: #495057; line-height: 1.6;">
+                        <strong>Key Insight:</strong> The steepest engagement drop occurs on <strong>Day 6</strong> with a 27.1pp decline, 24 hours before trial expiration. This is the optimal point for intervention.
+                    </div>
+                </div>
+                <div class="card">
+                    <h2>Lifetime & Session Analytics</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="stat-box"><div class="num">0.0</div><div class="desc">Median Sessions</div></div>
+                        <div class="stat-box"><div class="num">6.6</div><div class="desc">Avg Lifetime (Days)</div></div>
+                        <div class="stat-box"><div class="num">7.7</div><div class="desc">Top 10% Sessions</div></div>
+                        <div class="stat-box"><div class="num">~19%</div><div class="desc">Weekly Conversion Rate</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 20px;">
+                <h2>Methodological Rigor — Audit Trail</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; font-size: 13px;">
+                    <div style="padding: 10px; background: #e8f4fd; border-radius: 8px;">
+                        <strong style="color:#0d6efd;">✅ Pre-Experiment Power</strong><br>
+                        MDE 8% · α=0.05 · Power=0.80<br>
+                        Required: 14,650/arm
+                    </div>
+                    <div style="padding: 10px; background: #d4edda; border-radius: 8px;">
+                        <strong style="color:#28a745;">✅ Data Leakage Prevention</strong><br>
+                        ML features: day_offset ≤ 3 only<br>
+                        Purchases on days 1-3 excluded
+                    </div>
+                    <div style="padding: 10px; background: #fff3cd; border-radius: 8px;">
+                        <strong style="color:#856404;">✅ Bonferroni Correction</strong><br>
+                        Two tests → adjusted α=0.025<br>
+                        A/B z-test + Chi-square
+                    </div>
+                    <div style="padding: 10px; background: #f8d7da; border-radius: 8px;">
+                        <strong style="color:#721c24;">✅ Bot Filtering</strong><br>
+                        Behavioral heuristics<br>
+                        98% Precision · 100% Recall
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Google Data Analytics Portfolio Project · Built with Python, DuckDB, scikit-learn, and scipy<br>
+            Power BI Dashboard Layout · Data Generated from Pipeline
+        </div>
+    </body>
+    </html>
+    

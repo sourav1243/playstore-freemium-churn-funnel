@@ -1,0 +1,10 @@
+5-Fold CV ROC-AUC: 0.6794
+Test Set ROC-AUC: 0.6827
+              precision    recall  f1-score   support
+
+           0       0.71      0.88      0.78      5136
+           1       0.74      0.49      0.59      3659
+
+    accuracy                           0.72      8795
+   macro avg       0.72      0.68      0.69      8795
+weighted avg       0.72      0.72      0.70      8795
